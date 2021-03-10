@@ -53,6 +53,7 @@ namespace UniChili
 		}
 
 #pragma endregion
+
 	private:
 		virtual const std::vector<std::unique_ptr<Bindable>>& getStaticBindables() const noexcept = 0;
 

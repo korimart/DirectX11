@@ -49,7 +49,7 @@ int UniChili::App::run()
 void UniChili::App::doOneFrame()
 {
 	auto elapsed = timer.Mark();
-	
+
 	window.graphics()->clearBackBuffer(.5f, .5f, .5f);
 	window.graphics()->setView(camera.getView());
 
@@ -72,7 +72,7 @@ void UniChili::App::doOneFrame()
 	// of whether showImguiDemo is true or false. So check it first.
 	if (showImguiDemo)
 		ImGui::ShowDemoWindow(&showImguiDemo);
-	
+
 	// my window
 	if (ImGui::Begin("Hehe Control Window"))
 	{

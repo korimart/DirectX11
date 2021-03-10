@@ -17,6 +17,12 @@ namespace UniChili
 	class Box : public DrawableBase<Box>
 	{
 	public:
+		struct Vertex
+		{
+			DirectX::XMFLOAT3 pos;
+			DirectX::XMFLOAT3 normal;
+		};
+
 		Box(Graphics& graphics,
 			float x, float y, float z,
 			float dYaw, float dPitch, float dRoll,
@@ -24,7 +30,7 @@ namespace UniChili
 		Box(Box&&) = default;
 
 	public:
-		void setMaterial(Graphics &graphics, Material material)
+		void setMaterial(Graphics& graphics, Material material)
 		{
 			pMaterialCB->rewrite(graphics, material);
 		}
@@ -53,9 +59,9 @@ namespace UniChili
 		float x;
 		float y;
 		float z;
-		float yaw   = 0.f;
+		float yaw = 0.f;
 		float pitch = 0.f;
-		float roll  = 0.f;
+		float roll = 0.f;
 
 		// speeds
 		float dYaw;

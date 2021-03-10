@@ -9,21 +9,18 @@
 #include "../Bindables/Topology.h"
 #include "../Mesh/Cube.h"
 #include "../../Shaders/ShaderPaths.h"
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 
-UniChili::Box::Box(Graphics& graphics, 
-	float x, float y, float z, 
+UniChili::Box::Box(Graphics& graphics,
+	float x, float y, float z,
 	float dYaw, float dPitch, float dRoll,
 	bool useLighting)
-	: 
-	x(x), y(y), z(z), 
+	:
+	x(x), y(y), z(z),
 	dYaw(dYaw), dPitch(dPitch), dRoll(dRoll)
 {
-	struct Vertex
-	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT3 normal;
-	};
-
 	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 	{
 		{
@@ -46,10 +43,44 @@ UniChili::Box::Box(Graphics& graphics,
 		}
 	};
 
-	auto mesh = Cube::makeWithNormals<Vertex>();
-
 	if (!this->isStaticInit())
 	{
+		//auto mesh = Cube::makeWithNormals<Vertex>();
+
+		// test
+		Assimp::Importer importer;
+		const auto model = importer.ReadFile("Models\\suzanne.obj", aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+
+		// we know that there is only one mesh in this model
+		const auto rawMesh = model->mMeshes[0];
+
+		std::vector<Vertex> vertices;
+		std::vector<uint16_t> indices;
+
+		vertices.reserve(rawMesh->mNumVertices);
+
+		for (int i = 0; i < rawMesh->mNumVertices; i++)
+		{
+			vertices.push_back(
+				{
+					{ rawMesh->mVertices[i].x, rawMesh->mVertices[i].y, rawMesh->mVertices[i].z },
+					*reinterpret_cast<DirectX::XMFLOAT3*>(&rawMesh->mNormals[i])
+				}
+			);
+		}
+
+		indices.reserve(rawMesh->mNumFaces * 3);
+
+		for (int i = 0; i < rawMesh->mNumFaces; i++)
+		{
+			const auto& face = rawMesh->mFaces[i];
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+
+		auto mesh = IndexedTriangleList<Vertex>(vertices, indices);
+
 		auto indexBuffer = std::make_unique<IndexBuffer>(graphics, mesh.indices);
 		auto vs = std::make_unique<VertexShader>(graphics, L"SimpleVS.cso");
 		this->addStaticBindable(std::make_unique<InputLayout>(graphics, ied, vs->getByteCode()));
