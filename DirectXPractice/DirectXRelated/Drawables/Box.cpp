@@ -12,6 +12,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
+#include "../Mesh/Vertex.h"
 
 UniChili::Box::Box(Graphics& graphics,
 	float x, float y, float z,
@@ -54,21 +55,22 @@ UniChili::Box::Box(Graphics& graphics,
 		// we know that there is only one mesh in this model
 		const auto rawMesh = model->mMeshes[0];
 
-		std::vector<Vertex> vertices;
-		std::vector<uint16_t> indices;
+		VertexLayout layout;
+		layout
+			.append<VertexLayout::Position3D>()
+			.append<VertexLayout::Normal>();
 
-		vertices.reserve(rawMesh->mNumVertices);
+		VertexArray vertexArray(std::move(layout));
 
 		for (int i = 0; i < rawMesh->mNumVertices; i++)
 		{
-			vertices.push_back(
-				{
-					{ rawMesh->mVertices[i].x, rawMesh->mVertices[i].y, rawMesh->mVertices[i].z },
-					*reinterpret_cast<DirectX::XMFLOAT3*>(&rawMesh->mNormals[i])
-				}
+			vertexArray.emplace_back(
+				DirectX::XMFLOAT3{ rawMesh->mVertices[i].x, rawMesh->mVertices[i].y, rawMesh->mVertices[i].z },
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&rawMesh->mNormals[i])
 			);
 		}
 
+		std::vector<uint16_t> indices;
 		indices.reserve(rawMesh->mNumFaces * 3);
 
 		for (int i = 0; i < rawMesh->mNumFaces; i++)
@@ -79,16 +81,14 @@ UniChili::Box::Box(Graphics& graphics,
 			indices.push_back(face.mIndices[2]);
 		}
 
-		auto mesh = IndexedTriangleList<Vertex>(vertices, indices);
-
-		auto indexBuffer = std::make_unique<IndexBuffer>(graphics, mesh.indices);
+		auto indexBuffer = std::make_unique<IndexBuffer>(graphics, indices);
 		auto vs = std::make_unique<VertexShader>(graphics, L"SimpleVS.cso");
 		this->addStaticBindable(std::make_unique<InputLayout>(graphics, ied, vs->getByteCode()));
 		this->setStaticIndex(indexBuffer.get());
 
 		this->addStaticBindable(std::move(vs));
 		this->addStaticBindable(std::move(indexBuffer));
-		this->addStaticBindable(std::make_unique<VertexBuffer>(graphics, mesh.vertices));
+		this->addStaticBindable(std::make_unique<VertexBuffer>(graphics, vertexArray));
 		this->addStaticBindable(std::make_unique<PixelShader>(graphics, L"PhongPS.cso"));
 		this->addStaticBindable(std::make_unique<Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	}

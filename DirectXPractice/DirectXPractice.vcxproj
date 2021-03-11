@@ -205,13 +205,11 @@
     <ClInclude Include="DirectXRelated\Drawables\Material.h" />
     <ClInclude Include="DirectXRelated\Mesh\Vertex.h" />
     <ClInclude Include="DirectXRelated\RotationalCamera.h" />
-    <ClInclude Include="DirectXRelated\Drawables\Ball.h" />
     <ClInclude Include="DirectXRelated\Drawables\Box.h" />
     <ClInclude Include="DirectXRelated\Drawables\Drawable.h" />
     <ClInclude Include="DirectXRelated\Drawables\DrawableBase.h" />
     <ClInclude Include="DirectXRelated\Drawables\SingleColorDrawable.h" />
     <ClInclude Include="DirectXRelated\Drawables\TexturePlane.h" />
-    <ClInclude Include="DirectXRelated\Drawables\Wall.h" />
     <ClInclude Include="DirectXRelated\Graphics.h" />
     <ClInclude Include="DirectXRelated\Mesh\Cube.h" />
     <ClInclude Include="DirectXRelated\Mesh\IndexedTriangleList.h" />

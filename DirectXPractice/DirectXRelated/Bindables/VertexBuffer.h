@@ -1,6 +1,7 @@
 #pragma once
 #include "Bindable.h"
 #include <vector>
+#include "../Mesh/Vertex.h"
 
 namespace UniChili
 {
@@ -12,20 +13,19 @@ namespace UniChili
 		/// </summary>
 		/// <param name="graphics">The graphics.</param>
 		/// <param name="vertices">The vertices of type T where T is Vertex</param>
-		template<typename From>
-		VertexBuffer(Graphics& graphics, const std::vector<From> vertices)
-			: stride(sizeof(From))
+		VertexBuffer(Graphics& graphics, const VertexArray& vertexArray)
+			: stride(vertexArray.layout.getByteSize())
 		{
 			D3D11_BUFFER_DESC bd = {};
 			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER; // this is a vertex buffer
 			bd.Usage = D3D11_USAGE_DEFAULT; // can specify RW access
 			bd.CPUAccessFlags = 0u; // CPU cannot access this buffer
 			bd.MiscFlags = 0u; // miscellaneous flags that we don't need today
-			bd.ByteWidth = (UINT) (sizeof(From) * vertices.size());
-			bd.StructureByteStride = sizeof(From);
+			bd.ByteWidth = (UINT)vertexArray.buffer.size();
+			bd.StructureByteStride = stride;
 
 			D3D11_SUBRESOURCE_DATA srd = {};
-			srd.pSysMem = vertices.data(); // other members are advanced
+			srd.pSysMem = vertexArray.buffer.data(); // other members are advanced
 
 			HRESULT hr = getDevice(graphics)->CreateBuffer(&bd, &srd, &pVertexBuffer);
 			if (FAILED(hr)) throw MakeExceptionFromHr(hr);

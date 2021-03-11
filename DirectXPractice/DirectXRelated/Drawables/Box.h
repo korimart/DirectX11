@@ -17,12 +17,6 @@ namespace UniChili
 	class Box : public DrawableBase<Box>
 	{
 	public:
-		struct Vertex
-		{
-			DirectX::XMFLOAT3 pos;
-			DirectX::XMFLOAT3 normal;
-		};
-
 		Box(Graphics& graphics,
 			float x, float y, float z,
 			float dYaw, float dPitch, float dRoll,

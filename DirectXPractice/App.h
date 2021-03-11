@@ -2,8 +2,6 @@
 #include "WindowRelated/Window.h"
 #include "Helpers/ChiliTimer.h"
 #include "DirectXRelated/Drawables/Box.h"
-#include "DirectXRelated/Drawables/Wall.h"
-#include "DirectXRelated/Drawables/Ball.h"
 #include "DirectXRelated/Texture/Surface.h"
 #include "DirectXRelated/Drawables/TexturePlane.h"
 #include "Images/ImagePaths.h"

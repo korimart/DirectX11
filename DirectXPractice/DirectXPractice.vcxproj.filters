@@ -176,13 +176,7 @@
     <ClInclude Include="DirectXRelated\Mesh\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXRelated\Drawables\Wall.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXRelated\Mesh\Sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXRelated\Drawables\Ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DirectXRelated\Drawables\SingleColorDrawable.h">

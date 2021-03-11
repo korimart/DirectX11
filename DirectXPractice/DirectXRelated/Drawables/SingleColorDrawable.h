@@ -39,7 +39,7 @@ namespace UniChili
 		SingleColorDrawable(SingleColorDrawable&&) = default;
 
 	protected:
-		void init(Graphics& graphics, IndexedTriangleList<Vertex> mesh,
+		void init(Graphics& graphics, const VertexArray& vertexArray, const std::vector<uint16_t>& indices,
 			float r, float g, float b) noexcept
 		{
 			namespace dx = DirectX;
@@ -75,14 +75,14 @@ namespace UniChili
 
 			if (!isStaticInit())
 			{
-				auto indexBuffer = std::make_unique<IndexBuffer>(graphics, mesh.indices);
+				auto indexBuffer = std::make_unique<IndexBuffer>(graphics, indices);
 				auto vs = std::make_unique<VertexShader>(graphics, L"SimpleVS.cso");
 				addStaticBindable(std::make_unique<InputLayout>(graphics, ied, vs->getByteCode()));
 				setStaticIndex(indexBuffer.get());
 
 				addStaticBindable(std::move(vs));
 				addStaticBindable(std::move(indexBuffer));
-				addStaticBindable(std::make_unique<VertexBuffer>(graphics, mesh.vertices));
+				addStaticBindable(std::make_unique<VertexBuffer>(graphics, vertexArray));
 				addStaticBindable(std::make_unique<ConstantBufferPS<ColorArrayCB>>(graphics, &cbColor));
 				addStaticBindable(std::make_unique<PixelShader>(graphics, L"SingleColorPS.cso"));
 				addStaticBindable(std::make_unique<Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));

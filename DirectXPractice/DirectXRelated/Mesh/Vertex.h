@@ -66,7 +66,7 @@ public:
 
 	const Element& getElementAt(int index) const noexcept
 	{
-		assert(0 <= index && index < elements.size() && "index out of range");
+		assert(0 <= index && index < elements.size() && "Vertex Element at this index does not exist");
 
 		return elements[index];
 	}
@@ -102,6 +102,12 @@ public:
 	template<typename To, typename From>
 	static void setElementAs(char* elementPtr, From&& newData) noexcept
 	{
+		// if you look inside setElementAs, this function should be compiled
+		// for every case of To and From, for example, To = XMFloat3 and From = XMFloat2.
+		// If you don't do compile time branch here, the assignment below doesn't have
+		// overloads for such cases as above. So we make functions for each branch;
+		// a function for when the assignment can happen, and another function (else)
+		// for when the overload cannot be found.
 		if constexpr (std::is_assignable<To, From>::value)
 			*reinterpret_cast<To*>(elementPtr) = std::forward<From>(newData);
 		else
@@ -145,6 +151,9 @@ private:
 class VertexArray
 {
 public:
+	std::vector<char> buffer;
+	VertexLayout layout;
+
 	VertexArray(VertexLayout layout)
 		: layout(layout)
 	{
@@ -173,8 +182,4 @@ public:
 
 		return { backPtr, layout };
 	}
-
-private:
-	std::vector<char> buffer;
-	VertexLayout layout;
 };
