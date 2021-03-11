@@ -6,8 +6,8 @@ namespace UniChili
 	namespace Sphere
 	{
 		// https://github.com/planetchili/hw3d/blob/eaec95100f08d8796aafbae76b3769756c68239d/hw3d/Sphere
-		template<class T>
-		IndexedTriangleList<T> makeTesselated(int latDiv, int longDiv)
+		template<class From>
+		IndexedTriangleList<From> makeTesselated(int latDiv, int longDiv)
 		{
 			namespace dx = DirectX;
 
@@ -18,7 +18,7 @@ namespace UniChili
 			const float lattitudeAngle = PI / latDiv;
 			const float longitudeAngle = 2.0f * PI / longDiv;
 
-			std::vector<T> vertices;
+			std::vector<From> vertices;
 			for (int iLat = 1; iLat < latDiv; iLat++)
 			{
 				const auto latBase = dx::XMVector3Transform(
@@ -92,10 +92,10 @@ namespace UniChili
 			return { std::move(vertices),std::move(indices) };
 		}
 
-		template<class T>
-		IndexedTriangleList<T> make()
+		template<class From>
+		IndexedTriangleList<From> make()
 		{
-			return makeTesselated<T>(12, 24);
+			return makeTesselated<From>(12, 24);
 		}
 	}
 }

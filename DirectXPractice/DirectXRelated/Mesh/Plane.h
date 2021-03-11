@@ -9,8 +9,8 @@ namespace UniChili
 	/// </summary>
 	namespace Plane
 	{
-		template<class T>
-		IndexedTriangleList<T> makeTesselated(int divX, int divY)
+		template<class From>
+		IndexedTriangleList<From> makeTesselated(int divX, int divY)
 		{
 			namespace dx = DirectX;
 
@@ -25,7 +25,7 @@ namespace UniChili
 			// start from bottom left, move right faster than up.
 			// so the first vertex is left bottom and the second vertex
 			// is the one on the right and so on.
-			std::vector<T> vertices((size_t)vertCountX * vertCountY);
+			std::vector<From> vertices((size_t)vertCountX * vertCountY);
 			int vertIndex = 0;
 			for (int y = 0; y < vertCountY; y++)
 			{
@@ -65,10 +65,10 @@ namespace UniChili
 			return { std::move(vertices), std::move(indices) };
 		}
 
-		template<class T>
-		IndexedTriangleList<T> make()
+		template<class From>
+		IndexedTriangleList<From> make()
 		{
-			return makeTesselated<T>(1, 1);
+			return makeTesselated<From>(1, 1);
 		}
 	}
 }

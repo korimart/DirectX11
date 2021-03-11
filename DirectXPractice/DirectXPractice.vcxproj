@@ -203,6 +203,7 @@
     <ClInclude Include="DirectXRelated\Bindables\VertexShader.h" />
     <ClInclude Include="DirectXRelated\Drawables\LightBulb.h" />
     <ClInclude Include="DirectXRelated\Drawables\Material.h" />
+    <ClInclude Include="DirectXRelated\Mesh\Vertex.h" />
     <ClInclude Include="DirectXRelated\RotationalCamera.h" />
     <ClInclude Include="DirectXRelated\Drawables\Ball.h" />
     <ClInclude Include="DirectXRelated\Drawables\Box.h" />

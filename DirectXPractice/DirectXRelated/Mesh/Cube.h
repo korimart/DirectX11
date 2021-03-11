@@ -9,15 +9,15 @@ namespace UniChili
 	namespace Cube
 	{
 		// should be here because it's a templated function (duh).
-		template<class T> 
-		IndexedTriangleList<T> make()
+		template<class From> 
+		IndexedTriangleList<From> make()
 		{
 			namespace dx = DirectX;
 
 			// This makes a cube whose side is 1 unit long.
 			constexpr float side = 1.f / 2.f;
 
-			std::vector<T> vertices(8);
+			std::vector<From> vertices(8);
 			vertices[0].pos = { -side, -side, -side };
 			vertices[1].pos = { side, -side, -side };
 			vertices[2].pos = { -side, side, -side };
@@ -40,15 +40,15 @@ namespace UniChili
 			return { std::move(vertices), std::move(indices) };
 		}
 
-		template<class T>
-		IndexedTriangleList<T> makeWithNormals()
+		template<class From>
+		IndexedTriangleList<From> makeWithNormals()
 		{
 			namespace dx = DirectX;
 
 			// This makes a cube whose side is 1 unit long.
 			constexpr float side = 1.f / 2.f;
 
-			constexpr decltype(T::pos) poses[] =
+			constexpr decltype(From::pos) poses[] =
 			{
 				{ -side, -side, -side },
 				{ side, -side, -side },
@@ -60,9 +60,9 @@ namespace UniChili
 				{ side, side, side }
 			};
 
-			std::vector<T> vertices(36);
+			std::vector<From> vertices(36);
 
-			auto setNormal = [&vertices](int start, decltype(T::normal) normal)
+			auto setNormal = [&vertices](int start, decltype(From::normal) normal)
 			{
 				for (int i = start; i < start + 6; i++)
 					vertices[i].normal = normal;

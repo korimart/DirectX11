@@ -242,6 +242,9 @@
     <ClInclude Include="DirectXRelated\Drawables\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXRelated\Mesh\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\SimpleVS.hlsl" />

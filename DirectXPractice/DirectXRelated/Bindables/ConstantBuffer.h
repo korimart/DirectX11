@@ -9,7 +9,7 @@ namespace UniChili
 	/// <summary>
 	/// T is the struct of constant buffer data
 	/// </summary>
-	template<typename T>
+	template<typename From>
 	class ConstantBuffer : public Bindable
 	{
 	public:
@@ -21,14 +21,14 @@ namespace UniChili
 			bdc.Usage = D3D11_USAGE_DYNAMIC; // CPU is going to write to this buffer
 			bdc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // CPU should have access to this buffer
 			bdc.MiscFlags = 0u; // miscellaneous flags that we don't need today
-			bdc.ByteWidth = sizeof(T);
+			bdc.ByteWidth = sizeof(From);
 			bdc.StructureByteStride = 0u; // constant buffer is not an array like VB or IB
 
 			HRESULT hr = getDevice(graphics)->CreateBuffer(&bdc, nullptr, &pConstantBuffer);
 			if (FAILED(hr)) throw MakeExceptionFromHr(hr);
 		}
 
-		ConstantBuffer(Graphics& graphics, const T* data, unsigned slot = 0u)
+		ConstantBuffer(Graphics& graphics, const From* data, unsigned slot = 0u)
 			: slot(slot)
 		{
 			D3D11_BUFFER_DESC bdc = {};
@@ -36,7 +36,7 @@ namespace UniChili
 			bdc.Usage = D3D11_USAGE_DYNAMIC; // CPU is going to write to this buffer
 			bdc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // CPU should have access to this buffer
 			bdc.MiscFlags = 0u; // miscellaneous flags that we don't need today
-			bdc.ByteWidth = sizeof(T);
+			bdc.ByteWidth = sizeof(From);
 			bdc.StructureByteStride = 0u; // constant buffer is not an array like VB or IB
 
 			D3D11_SUBRESOURCE_DATA srdc = {};
@@ -50,7 +50,7 @@ namespace UniChili
 		ConstantBuffer& operator=(const ConstantBuffer&) = delete;
 
 	public:
-		void rewrite(Graphics& graphics, const T& data)
+		void rewrite(Graphics& graphics, const From& data)
 		{
 			D3D11_MAPPED_SUBRESOURCE msr;
 			// lock resource
@@ -73,12 +73,12 @@ namespace UniChili
 		unsigned slot;
 	};
 
-	template<typename T>
-	class ConstantBufferVS : public ConstantBuffer<T>
+	template<typename From>
+	class ConstantBufferVS : public ConstantBuffer<From>
 	{
-		using ConstantBuffer<T>::ConstantBuffer;
+		using ConstantBuffer<From>::ConstantBuffer;
 		using Bindable::getContext;
-		using ConstantBuffer<T>::pConstantBuffer;
+		using ConstantBuffer<From>::pConstantBuffer;
 
 	public:
 		void bind(Graphics& graphics) noexcept override
@@ -90,12 +90,12 @@ namespace UniChili
 		}
 	};
 
-	template<typename T>
-	class ConstantBufferPS : public ConstantBuffer<T>
+	template<typename From>
+	class ConstantBufferPS : public ConstantBuffer<From>
 	{
-		using ConstantBuffer<T>::ConstantBuffer;
+		using ConstantBuffer<From>::ConstantBuffer;
 		using Bindable::getContext;
-		using ConstantBuffer<T>::pConstantBuffer;
+		using ConstantBuffer<From>::pConstantBuffer;
 
 	public:
 		void bind(Graphics& graphics) noexcept override

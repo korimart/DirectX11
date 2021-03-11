@@ -17,14 +17,14 @@ namespace UniChili
 	/// While simple, doesn't seem like the best way to make a drawable.
 	/// Or maybe it is. TODO: come back to be later.
 	/// </summary>
-	template<class T>
-	class SingleColorDrawable : public DrawableBase<T>
+	template<class From>
+	class SingleColorDrawable : public DrawableBase<From>
 	{
-		using DrawableBase<T>::isStaticInit;
-		using DrawableBase<T>::addStaticBindable;
-		using DrawableBase<T>::setIndexFromStatic;
-		using DrawableBase<T>::setStaticIndex;
-		using DrawableBase<T>::addBindable;
+		using DrawableBase<From>::isStaticInit;
+		using DrawableBase<From>::addStaticBindable;
+		using DrawableBase<From>::setIndexFromStatic;
+		using DrawableBase<From>::setStaticIndex;
+		using DrawableBase<From>::addBindable;
 	
 	protected:
 		struct Vertex

@@ -8,12 +8,12 @@ namespace UniChili
 	/// Template allows for any struct containing member 'pos'
 	/// to be stored in this class as vertices.
 	/// </summary>
-	template<class T>
+	template<class From>
 	class IndexedTriangleList
 	{
 	public:
 		IndexedTriangleList(
-			std::vector<T> vertices,
+			std::vector<From> vertices,
 			std::vector<uint16_t> indices) noexcept
 			: vertices(std::move(vertices)), indices(std::move(indices))
 		{}
@@ -41,7 +41,7 @@ namespace UniChili
 		}
 #pragma endregion
 	public:
-		std::vector<T> vertices;
+		std::vector<From> vertices;
 		std::vector<uint16_t> indices;
 	};
 }

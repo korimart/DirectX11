@@ -6,6 +6,9 @@
 #include "Imgui/imgui_impl_dx11.h"
 #include "Imgui/imgui.h"
 
+// test
+#include "DirectXRelated/Mesh/Vertex.h"
+
 using namespace UniChili;
 
 // for initializing and destroying GDI+ library.
@@ -16,6 +19,14 @@ ImguiManager imguiManager;
 UniChili::App::App(int width, int height, const wchar_t* title)
 	: window(width, height, title)
 {
+	VertexLayout layout;
+	layout
+		.append<VertexLayout::Position3D>()
+		.append<VertexLayout::Texture2D>();
+
+	VertexArray vArray(std::move(layout));
+	vArray.emplace_back(DirectX::XMFLOAT3{ 0.f, 0.f, 0.f }, DirectX::XMFLOAT2{ 1.f, 1.f });
+
 	drawables.reserve(10);
 
 	auto lightBulb = std::make_unique<LightBulb>(*window.graphics());

@@ -8,7 +8,7 @@ namespace UniChili
 	/// In this class are the static portion of bindings.
 	/// Add instance-specific bindings using Drawable member functions.
 	/// </summary>
-	template<class T>
+	template<class From>
 	class DrawableBase : public Drawable
 	{
 	protected:
@@ -43,11 +43,11 @@ namespace UniChili
 		static IndexBuffer* pStaticIndexBuffer;
 	};
 
-	template<class T>
-	std::vector<std::unique_ptr<Bindable>> DrawableBase<T>::staticBindables;
+	template<class From>
+	std::vector<std::unique_ptr<Bindable>> DrawableBase<From>::staticBindables;
 
-	template<class T>
-	IndexBuffer* DrawableBase<T>::pStaticIndexBuffer;
+	template<class From>
+	IndexBuffer* DrawableBase<From>::pStaticIndexBuffer;
 }
 
 

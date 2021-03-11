@@ -3,8 +3,8 @@
 
 namespace UniChili
 {
-	template<typename T>
-	void popQueueToSize(std::queue<T>& queue, int maxSize) noexcept
+	template<typename From>
+	void popQueueToSize(std::queue<From>& queue, int maxSize) noexcept
 	{
 		while (queue.size() >= maxSize) queue.pop();
 	}

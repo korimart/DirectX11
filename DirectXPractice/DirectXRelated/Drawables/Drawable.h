@@ -9,7 +9,7 @@ namespace UniChili
 {
 	class Drawable
 	{
-		template<class T>
+		template<class From>
 		friend class DrawableBase;
 		
 	public:
