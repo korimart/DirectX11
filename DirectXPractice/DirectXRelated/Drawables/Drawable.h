@@ -11,7 +11,7 @@ namespace UniChili
 	{
 		template<class From>
 		friend class DrawableBase;
-		
+
 	public:
 		Drawable() = default;
 		Drawable(Drawable&&) = default;
@@ -21,14 +21,24 @@ namespace UniChili
 
 #pragma region interface
 	public:
-		virtual DirectX::XMMATRIX getTransform() const noexcept = 0;
+		DirectX::XMMATRIX getTransform() const noexcept
+		{
+			return DirectX::XMLoadFloat4x4(&transformMat);
+		}
+
+		void setTransform(DirectX::XMMATRIX transform) noexcept
+		{
+			DirectX::XMStoreFloat4x4(&transformMat, transform);
+		}
 
 		/// <summary>
 		/// Write whatever update logic needed for this Drawable (like transform) in this method.
 		/// </summary>
 		/// <param name="elapsed">The time elapsed since last frame in miliseconds</param>
 		/// <returns></returns>
-		virtual void update(float elapsed) noexcept = 0;
+		virtual void update(float elapsed) noexcept
+		{
+		}
 
 	public:
 		void setIndexBuffer(const IndexBuffer* indexBuffer) noexcept
@@ -44,7 +54,8 @@ namespace UniChili
 			for (const auto& bindable : bindables)
 				bindable->bind(graphics);
 
-			graphics.drawIndexed(pIndexBuffer->getIndexCount());
+			auto indexBuffer = pIndexBuffer ? pIndexBuffer : getStaticIndexBuffer();
+			graphics.drawIndexed(indexBuffer->getIndexCount());
 		}
 
 		void addBindable(std::unique_ptr<Bindable> bindable) noexcept
@@ -56,9 +67,11 @@ namespace UniChili
 
 	private:
 		virtual const std::vector<std::unique_ptr<Bindable>>& getStaticBindables() const noexcept = 0;
+		virtual IndexBuffer* getStaticIndexBuffer() const noexcept = 0;
 
 	private:
 		const IndexBuffer* pIndexBuffer = nullptr;
 		std::vector<std::unique_ptr<Bindable>> bindables;
+		DirectX::XMFLOAT4X4 transformMat;
 	};
 }

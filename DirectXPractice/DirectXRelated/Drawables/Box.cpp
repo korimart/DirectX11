@@ -73,8 +73,6 @@ UniChili::Box::Box(Graphics& graphics,
 		this->addStaticBindable(std::make_unique<Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	}
 
-	this->setIndexFromStatic();
-
 	// default is white
 	Material material
 	{

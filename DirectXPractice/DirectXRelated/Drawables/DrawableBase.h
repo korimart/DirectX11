@@ -27,15 +27,15 @@ namespace UniChili
 			pStaticIndexBuffer = indexBuffer;
 		}
 
-		void setIndexFromStatic() noexcept
-		{
-			pIndexBuffer = pStaticIndexBuffer;
-		}
-
 	private:
 		const std::vector<std::unique_ptr<Bindable>> &getStaticBindables() const noexcept override
 		{
 			return staticBindables;
+		}
+
+		virtual IndexBuffer* getStaticIndexBuffer() const noexcept override
+		{
+			return pStaticIndexBuffer;
 		}
 
 	private:

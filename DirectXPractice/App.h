@@ -9,6 +9,9 @@
 #include "DirectXRelated/Drawables/LightBulb.h"
 #include "DirectXRelated/Drawables/Material.h"
 
+// test
+#include "DirectXRelated/Drawables/MeshDrawable.h"
+
 namespace UniChili
 {
 	class App
@@ -33,8 +36,8 @@ namespace UniChili
 		Window window;
 		ChiliTimer timer;
 		std::vector<std::unique_ptr<Drawable>> drawables;
-		Box* pBox = nullptr;
 		float speedFactor = 1.0f;
 		LightBulb* pLightBulb = nullptr;
+		Model nanosuit;
 	};
 }

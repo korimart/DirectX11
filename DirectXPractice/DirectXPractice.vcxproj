@@ -170,6 +170,7 @@
     <ClCompile Include="DirectXRelated\Bindables\VertexShader.cpp" />
     <ClCompile Include="DirectXRelated\Drawables\Box.cpp" />
     <ClCompile Include="DirectXRelated\Drawables\LightBulb.cpp" />
+    <ClCompile Include="DirectXRelated\Drawables\MeshDrawable.cpp" />
     <ClCompile Include="DirectXRelated\Graphics.cpp" />
     <ClCompile Include="DirectXRelated\Texture\GDIPlusManager.cpp" />
     <ClCompile Include="DirectXRelated\Texture\Surface.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="DirectXRelated\Bindables\VertexShader.h" />
     <ClInclude Include="DirectXRelated\Drawables\LightBulb.h" />
     <ClInclude Include="DirectXRelated\Drawables\Material.h" />
+    <ClInclude Include="DirectXRelated\Drawables\MeshDrawable.h" />
     <ClInclude Include="DirectXRelated\Mesh\Vertex.h" />
     <ClInclude Include="DirectXRelated\RotationalCamera.h" />
     <ClInclude Include="DirectXRelated\Drawables\Box.h" />

@@ -6,9 +6,6 @@
 #include "Imgui/imgui_impl_dx11.h"
 #include "Imgui/imgui.h"
 
-// test
-#include "DirectXRelated/Mesh/Vertex.h"
-
 using namespace UniChili;
 
 // for initializing and destroying GDI+ library.
@@ -17,16 +14,8 @@ GDIPlusManager gdiManager;
 ImguiManager imguiManager;
 
 UniChili::App::App(int width, int height, const wchar_t* title)
-	: window(width, height, title)
+	: window(width, height, title), nanosuit(*window.graphics(), "Models\\nanosuit.obj")
 {
-	VertexLayout layout;
-	layout
-		.append(VertexLayout::Position3D)
-		.append(VertexLayout::Texture2D);
-
-	VertexArray vArray(std::move(layout));
-	vArray.emplace_back(DirectX::XMFLOAT3{ 0.f, 0.f, 0.f }, DirectX::XMFLOAT2{ 1.f, 1.f });
-
 	drawables.reserve(10);
 
 	auto lightBulb = std::make_unique<LightBulb>(*window.graphics());
@@ -35,15 +24,6 @@ UniChili::App::App(int width, int height, const wchar_t* title)
 	pLightBulb = lightBulb.get();
 
 	drawables.push_back(std::move(lightBulb));
-
-	auto box1 = std::make_unique<Box>(
-		*window.graphics(),
-		0.f, 0.f, 0.f,
-		1.0f, 1.0f, 1.0f);
-
-	pBox = box1.get();
-
-	drawables.push_back(std::move(box1));
 }
 
 int UniChili::App::run()
@@ -72,6 +52,8 @@ void UniChili::App::doOneFrame()
 		drawable->draw(*window.graphics());
 	}
 
+	nanosuit.draw(*window.graphics());
+
 	// after drawing our 3D stuff, draw Imgui because
 	// Imgui doesn't know about the depth buffer.
 	ImGui_ImplDX11_NewFrame(); // must come before win32
@@ -95,7 +77,9 @@ void UniChili::App::doOneFrame()
 		// material
 		static Material mat;
 		if (ImGui::ColorPicker3("Material Color", reinterpret_cast<float*>(&mat)))
-			pBox->setMaterial(*window.graphics(), mat);
+		{
+			// nothing
+		}
 	}
 	ImGui::End();
 

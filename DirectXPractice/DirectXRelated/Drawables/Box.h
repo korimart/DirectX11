@@ -36,17 +36,13 @@ namespace UniChili
 			this->z = z;
 		}
 
-		DirectX::XMMATRIX getTransform() const noexcept override
-		{
-			return DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll)
-				* DirectX::XMMatrixTranslation(x, y, z);
-		}
-
 		void update(float elapsed) noexcept override
 		{
 			yaw += dYaw * elapsed;
 			pitch += dPitch * elapsed;
 			roll += dRoll * elapsed;
+
+			setTransform(DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) * DirectX::XMMatrixTranslation(x, y, z));
 		}
 
 	protected:
