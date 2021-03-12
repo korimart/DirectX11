@@ -22,28 +22,6 @@ UniChili::Box::Box(Graphics& graphics,
 	x(x), y(y), z(z),
 	dYaw(dYaw), dPitch(dPitch), dRoll(dRoll)
 {
-	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-	{
-		{
-			"Position", // semantic that we gave in VS
-			0, // we can append numbers at the end of semantic. 0 if none.
-			DXGI_FORMAT_R32G32B32_FLOAT, // Position is 2 32-bit floats
-			0, // slot 0
-			0, // offset; This is the first one so just 0 bytes
-			D3D11_INPUT_PER_VERTEX_DATA, // no instancing
-			0  // advanced
-		},
-		{
-			"Normal", // semantic that we gave in VS
-			0, // we can append numbers at the end of semantic. 0 if none.
-			DXGI_FORMAT_R32G32B32_FLOAT,
-			0, // slot 0
-			12, // offset;
-			D3D11_INPUT_PER_VERTEX_DATA, // no instancing
-			0  // advanced
-		}
-	};
-
 	if (!this->isStaticInit())
 	{
 		//auto mesh = Cube::makeWithNormals<Vertex>();
@@ -59,6 +37,8 @@ UniChili::Box::Box(Graphics& graphics,
 		layout
 			.append(VertexLayout::Position3D)
 			.append(VertexLayout::Normal);
+
+		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied = layout.getInputElementDescs();
 
 		VertexArray vertexArray(std::move(layout));
 
