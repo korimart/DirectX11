@@ -12,6 +12,34 @@ public:
 		Normal
 	};
 
+	template<ElementType> 
+	struct ElementTypeMap;
+
+	// template specialization
+	template<>
+	struct ElementTypeMap<Position3D>
+	{
+		using InternalType = DirectX::XMFLOAT3;
+		DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+		const char* semantic = "Position";
+	};
+
+	template<>
+	struct ElementTypeMap<Normal>
+	{
+		using InternalType = DirectX::XMFLOAT3;
+		DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+		const char* semantic = "Normal";
+	};
+
+	template<>
+	struct ElementTypeMap<Texture2D>
+	{
+		using InternalType = DirectX::XMFLOAT2;
+		DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
+		const char* semantic = "Texcoord";
+	};
+	
 	struct Element
 	{
 		ElementType type;
@@ -26,11 +54,12 @@ public:
 		{
 			switch (type)
 			{
-			case Position3D: case Normal:
-				return sizeof(DirectX::XMFLOAT3);
+			case Position3D: 
+			case Normal:
+				return sizeof(ElementTypeMap<Position3D>::InternalType);
 
 			case Texture2D:
-				return sizeof(DirectX::XMFLOAT2);
+				return sizeof(ElementTypeMap<Texture2D>::InternalType);
 			}
 		}
 	};
@@ -49,8 +78,7 @@ public:
 		return nullptr;
 	}
 
-	template<ElementType type>
-	VertexLayout& append() noexcept
+	VertexLayout& append(ElementType type) noexcept
 	{
 		size_t newOffset = elements.empty() ? 0u : elements.back().offset + elements.back().getByteSize();
 		elements.emplace_back(type, newOffset);
@@ -92,11 +120,7 @@ public:
 		if (element)
 			elementData = data + element->offset;
 
-		if constexpr (type == VertexLayout::Position3D || type == VertexLayout::Normal)
-			return reinterpret_cast<DirectX::XMFLOAT3*>(elementData);
-
-		if constexpr (type == VertexLayout::Texture2D)
-			return reinterpret_cast<DirectX::XMFLOAT2*>(elementData);
+		return reinterpret_cast<typename VertexLayout::ElementTypeMap<type>::InternalType*>(elementData);
 	}
 
 	template<typename To, typename From>
@@ -124,11 +148,11 @@ public:
 		{
 		case VertexLayout::Position3D:
 		case VertexLayout::Normal:
-			setElementAs<DirectX::XMFLOAT3>(elementPtr, std::forward<From>(newData));
+			setElementAs<VertexLayout::ElementTypeMap<VertexLayout::Position3D>::InternalType>(elementPtr, std::forward<From>(newData));
 			break;
 
 		case VertexLayout::Texture2D:
-			setElementAs<DirectX::XMFLOAT2>(elementPtr, std::forward<From>(newData));
+			setElementAs<VertexLayout::ElementTypeMap<VertexLayout::Texture2D>::InternalType>(elementPtr, std::forward<From>(newData));
 			break;
 
 		default:

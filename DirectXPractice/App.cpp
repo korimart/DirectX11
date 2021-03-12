@@ -21,8 +21,8 @@ UniChili::App::App(int width, int height, const wchar_t* title)
 {
 	VertexLayout layout;
 	layout
-		.append<VertexLayout::Position3D>()
-		.append<VertexLayout::Texture2D>();
+		.append(VertexLayout::Position3D)
+		.append(VertexLayout::Texture2D);
 
 	VertexArray vArray(std::move(layout));
 	vArray.emplace_back(DirectX::XMFLOAT3{ 0.f, 0.f, 0.f }, DirectX::XMFLOAT2{ 1.f, 1.f });

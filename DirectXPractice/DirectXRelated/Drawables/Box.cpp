@@ -57,8 +57,8 @@ UniChili::Box::Box(Graphics& graphics,
 
 		VertexLayout layout;
 		layout
-			.append<VertexLayout::Position3D>()
-			.append<VertexLayout::Normal>();
+			.append(VertexLayout::Position3D)
+			.append(VertexLayout::Normal);
 
 		VertexArray vertexArray(std::move(layout));
 
