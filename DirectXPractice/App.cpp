@@ -14,7 +14,7 @@ GDIPlusManager gdiManager;
 ImguiManager imguiManager;
 
 UniChili::App::App(int width, int height, const wchar_t* title)
-	: window(width, height, title), nanosuit(*window.graphics(), "Models\\nanosuit.obj")
+	: window(width, height, title), nanosuit(*window.graphics(), "Models\\nano.gltf")
 {
 	drawables.reserve(10);
 
